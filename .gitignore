@@ -1,0 +1,10 @@
+
+*.csproj.user
+
+bin
+obj/
+packages
+*.suo
+
+csx/
+rcf/

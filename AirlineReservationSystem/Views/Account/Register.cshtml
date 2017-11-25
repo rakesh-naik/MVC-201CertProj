@@ -1,0 +1,142 @@
+﻿@model AirlineResSystem.BusinessLayer.Model.UserDetailDO
+
+@{
+    ViewBag.Title = "Register";
+}
+
+<h3>New User Registration</h3>
+<style type="text/css">
+    .form-control {
+        display: inline;
+    }
+
+    .text-error {
+        color: red;
+        padding-left: 10px;
+    }
+</style>
+<script type="text/javascript">
+    //$(document).ready(function (e) {
+    //    $("#txtUserName").on(blur, function (e) {
+    //        $.ajax({
+    //            type: "GET",
+    //            url: '/Limo/GetLimoReportData/',
+    //            dataType: "json",
+    //            data: { "month": month, "year": year, "isFirstTimeLoad": isFirstTimeLoad },
+    //            cache: false,
+    //            success: function (data) {
+    //                RenderResults(data);
+    //            },
+    //            error: function (req) {
+    //                RenderError(req);
+
+    //            }
+    //        });
+    //    });
+    //});
+</script>
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "frmRegisterUser" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        @*<h4>UserInfo</h4>*@
+        <hr />
+
+        @if (TempData["Message"] != null)
+        {
+            <script type="text/javascript">alert(@TempData["Message"].ToString());</script>
+        }
+        @Html.ValidationSummary(true, "", new { @class = "text-error" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control", id = "txtUserName" } })
+                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.Password, new { @class = "form-control text-box single-line input-validation-error", maxlength = "15" })
+                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control text-box single-line input-validation-error", maxlength = "15" })
+                @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Nationality, new SelectList(@Model.GetCountryList(), "Key", "Value"), new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EmailId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EmailId, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EmailId, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.PassportNo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PassportNo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PassportNo, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MiscInfo, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MiscInfo, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MiscInfo, "", new { @class = "text-error" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
