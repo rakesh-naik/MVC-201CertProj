@@ -21,6 +21,7 @@ namespace AirlineResSystem.DataAccess
         public string last_name { get; set; }
         public string country { get; set; }
         public string mobile { get; set; }
+        public System.DateTime date_of_birth { get; set; }
         public string email_addr { get; set; }
         public string passport_no { get; set; }
         public string misc_info { get; set; }

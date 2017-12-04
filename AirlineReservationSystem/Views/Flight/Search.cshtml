@@ -1,0 +1,175 @@
+﻿@model AirlineResSystem.BusinessLayer.Model.FlightSearch
+
+@{
+    ViewBag.Title = "Search";
+    AirlineResSystem.BusinessLayer.SearchManager srch = new AirlineResSystem.BusinessLayer.SearchManager();
+    var countryList = srch.GetCountryList(true);
+
+}
+
+<h2>Search for Flights</h2>
+<style type="text/css">
+    .searchBar {
+    }
+
+        .searchBar td {
+            vertical-align: middle;
+            padding: 8px;
+            line-height: 1.428571429;
+            border: none;
+        }
+
+    .dropdown {
+        display: inline !important;
+        padding-right: 5px;
+    }
+</style>
+
+@using (Html.BeginForm("Results", "Search", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-horizontal" style="min-height:400px;">
+        <h4></h4>
+        <hr />
+        <table style="width:92%" cellpadding="2" class="searchBar">
+            <tr>
+                <td style="width:5%"><h4>FROM:</h4></td>
+                <td style="width:42%;">
+                    @Html.LabelFor(model => model.SourceCountry, htmlAttributes: new { @class = "control-label col-md-2" }) @Html.DropDownListFor(model => model.SourceCountry, new SelectList(countryList, "Key", "Value", "--select--"), new { @id = "ddlSrcCntry", @class = "form-control dropdown countryDDL" })   @Html.ValidationMessageFor(model => model.SourceCountry, "", new { @class = "text-danger" })
+                </td>
+                <td style="width:42%;">
+                    @Html.LabelFor(model => model.SourceCity, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.DropDownListFor(model => model.SourceCity, new List<SelectListItem>(), " ", new { @class = "form-control dropdown", id = "ddlSrcCity" })
+                    @Html.ValidationMessageFor(model => model.SourceCity, "", new { @class = "text-danger" })
+
+                </td>
+            </tr>
+            <tr>
+                <td style="width:5%"><h4>TO:</h4></td>
+                <td style="width:42%;">
+                    @Html.LabelFor(model => model.DestCountry, htmlAttributes: new { @class = "control-label col-md-2" }) @Html.DropDownListFor(model => model.DestCountry, new SelectList(countryList, "Key", "Value", "--select--"), new { @id = "ddlDestCntry", @class = "form-control dropdown countryDDL" })  @Html.ValidationMessageFor(model => model.DestCountry, "", new { @class = "text-danger" })
+                </td>
+                <td style="width:42%;">
+                    @Html.LabelFor(model => model.DestinationCity, htmlAttributes: new { @class = "control-label col-md-2" })
+
+                    @Html.DropDownListFor(model => model.DestinationCity, new List<SelectListItem>(), " ", new { @class = "form-control dropdown", id = "ddlDestCity" })
+                    @Html.ValidationMessageFor(model => model.DestinationCity, "", new { @class = "text-danger" })
+
+                </td>
+            </tr>
+        </table>
+        <div class="form-group">
+            <div style="margin-left:30px;">
+                <input type="submit" value="Search" class="btn btn-warning" />
+            </div>
+        </div>
+        @if (Model.SearchResults != null)
+        {
+            if (Model.SearchResults.Count > 0)
+            {
+                <table class="table">
+                    <tr>
+                        <th>
+                            Source City
+                        </th>
+                        <th>
+                            Destination City
+                        </th>
+                        <th>
+                            Route
+                        </th>
+                        <th>
+                            Class
+                        </th>
+                        <th>
+                            Fare
+                        </th>
+                        <th>
+                            Departure
+                        </th>
+                        <th>
+                            Arrival
+                        </th>
+                        <th></th>
+                    </tr>
+
+                    @foreach (var item in Model.SearchResults)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SourceCity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DestCity)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Route)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Class)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Fare)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DepDateTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ArrivalDateTime)
+                            </td>                           
+                            <td>
+                                <button class="btn-primary submitBtn">Book</button>
+                            </td>
+                        </tr>
+                    }
+
+                </table>
+            }
+        }
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+
+    $(".countryDDL").change(function (e) {
+        var selectedDDL = $(this).attr('id');
+        var country = $(this).val();
+        var cityDDL = "";
+
+        if (selectedDDL == "ddlSrcCntry")
+        { cityDDL = "#ddlSrcCity"; }
+        else
+        { cityDDL = "#ddlDestCity"; }
+        $(cityDDL).empty();
+        alert(cityDDL);
+        alert(country + " :: " + selectedDDL);
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetCityList")',
+            dataType: "json",
+            data: { "countryId": country },
+            cache: true,
+            success: function (data) {
+                BindCity(data, cityDDL);
+            },
+            error: function (req) {
+                alert("unable to get city list");
+            }
+        });
+    });
+
+    function BindCity(cities, cityDrpDwn) {
+        $.each(cities, function (i, city) {
+            $(cityDrpDwn).append('<option value="' + city.Value + '">' +
+                 city.Text + '</option>');
+
+        });
+    }
+</script>

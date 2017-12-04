@@ -14,6 +14,12 @@ namespace AirlineResSystem.DataAccess
     
     public partial class Journey
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Journey()
+        {
+            this.Ticketing_Info = new HashSet<Ticketing_Info>();
+        }
+    
         public int journey_id { get; set; }
         public int source { get; set; }
         public int dest { get; set; }
@@ -21,5 +27,7 @@ namespace AirlineResSystem.DataAccess
         public string route { get; set; }
     
         public virtual City City { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ticketing_Info> Ticketing_Info { get; set; }
     }
 }

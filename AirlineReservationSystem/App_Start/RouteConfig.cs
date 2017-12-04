@@ -14,9 +14,21 @@ namespace AirlineReservationSystem
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "FlightSearchResults",
+                url: "Search/Results",
+                defaults: new { controller = "Flight", action = "Search" }
+            );
+
+            routes.MapRoute(
+                name: "CancelTicket",
+                url: "Ticket/Cancel",
+                defaults: new { controller = "Flight", action = "CancelTicket" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "Flight", action = "Search", id = UrlParameter.Optional }
             );
         }
     }

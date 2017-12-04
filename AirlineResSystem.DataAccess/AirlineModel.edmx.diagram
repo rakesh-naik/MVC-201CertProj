@@ -4,16 +4,20 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="3ce68120579a4e858e088b9747179796" Name="Diagram1">
+      <Diagram DiagramId="ab432d0424af47b384513aaa98ad4e0a" Name="Diagram1">
         <EntityTypeShape EntityType="AirlineReservationModel.City" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirlineReservationModel.Country" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirlineReservationModel.Journey" Width="1.5" PointX="5.25" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirlineReservationModel.Schedule" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirlineReservationModel.sysdiagram" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.Country" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.FlightBooking_Info" Width="1.5" PointX="9.75" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.Journey" Width="1.5" PointX="5.25" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.Schedule" Width="1.5" PointX="7.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.Ticketing_Info" Width="1.5" PointX="7.5" PointY="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirlineReservationModel.UserInfo" Width="1.5" PointX="3" PointY="4.625" IsExpanded="true" />
         <AssociationConnector Association="AirlineReservationModel.FK_City_Country" ManuallyRouted="false" />
         <AssociationConnector Association="AirlineReservationModel.FK_Journey_City" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="AirlineReservationModel.UserInfo" Width="1.5" PointX="3" PointY="4.875" />
-        <AssociationConnector Association="AirlineReservationModel.FK_UserInfo_Country" />
+        <AssociationConnector Association="AirlineReservationModel.FK_UserInfo_Country" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineReservationModel.FK_FlightBooking_Info_Schedule" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineReservationModel.FK_FlightBooking_Info_Ticketing_Info" ManuallyRouted="false" />
+        <AssociationConnector Association="AirlineReservationModel.FK_Ticketing_Info_Journey" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

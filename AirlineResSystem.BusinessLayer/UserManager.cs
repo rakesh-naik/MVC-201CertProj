@@ -40,18 +40,8 @@ namespace AirlineResSystem.BusinessLayer
 
         public Dictionary<string, string> GetCountryList()
         {
-            var dbctx = new AirlineReservationEntities();
-            var countryList = new Dictionary<string, string>();
-
-            var tblData = (from cou in dbctx.Countries
-                           select cou);
-            foreach (var country in tblData)
-            {
-                if (!countryList.ContainsKey(country.country_code))
-                    countryList.Add(country.country_code, country.country_name);
-            }
-
-            return countryList;
+            SearchManager search = new SearchManager();
+            return search.GetCountryList();
         }
 
         public bool AuthenticateUser(string UserName, string pswrd)

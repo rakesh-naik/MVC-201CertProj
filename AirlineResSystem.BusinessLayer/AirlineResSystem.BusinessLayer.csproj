@@ -51,8 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Cryptography.cs" />
+    <Compile Include="Model\FlightInfo.cs" />
     <Compile Include="Model\UserDetailDO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SearchManager.cs" />
     <Compile Include="UserManager.cs" />
   </ItemGroup>
   <ItemGroup>

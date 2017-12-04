@@ -6,7 +6,7 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Flight Search", "Search", "Flight")</li>
-                    <li>@Html.ActionLink("Cancel Tickets", "CancelTicket", "Flight")</li>
+                    <li>@Html.ActionLink("Cancel Tickets", "Cancel", "Ticket")</li>
                     <li>@*@Html.ActionLink("Contact", "Contact", "Home")*@</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -37,7 +37,6 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

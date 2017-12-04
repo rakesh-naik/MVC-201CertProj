@@ -27,9 +27,10 @@ namespace AirlineResSystem.DataAccess
     
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
+        public virtual DbSet<FlightBooking_Info> FlightBooking_Info { get; set; }
         public virtual DbSet<Journey> Journeys { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<Ticketing_Info> Ticketing_Info { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
     }
 }

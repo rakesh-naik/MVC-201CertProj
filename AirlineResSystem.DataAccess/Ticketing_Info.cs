@@ -12,20 +12,21 @@ namespace AirlineResSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Schedule
+    public partial class Ticketing_Info
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Schedule()
+        public Ticketing_Info()
         {
             this.FlightBooking_Info = new HashSet<FlightBooking_Info>();
         }
     
-        public int schedule_id { get; set; }
+        public string ticket_id { get; set; }
         public int journey_id { get; set; }
-        public System.DateTime dep_date_time { get; set; }
-        public System.DateTime arr_date_time { get; set; }
+        public string @class { get; set; }
+        public string status { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<FlightBooking_Info> FlightBooking_Info { get; set; }
+        public virtual Journey Journey { get; set; }
     }
 }

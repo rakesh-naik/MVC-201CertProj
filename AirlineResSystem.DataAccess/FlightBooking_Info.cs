@@ -12,12 +12,15 @@ namespace AirlineResSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class sysdiagram
+    public partial class FlightBooking_Info
     {
-        public string name { get; set; }
-        public int principal_id { get; set; }
-        public int diagram_id { get; set; }
-        public Nullable<int> version { get; set; }
-        public byte[] definition { get; set; }
+        public int booking_id { get; set; }
+        public int cust_id { get; set; }
+        public int journy_id { get; set; }
+        public int schedule_id { get; set; }
+        public string ticket_id { get; set; }
+    
+        public virtual Schedule Schedule { get; set; }
+        public virtual Ticketing_Info Ticketing_Info { get; set; }
     }
 }
