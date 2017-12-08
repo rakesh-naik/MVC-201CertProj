@@ -18,6 +18,7 @@ namespace AirlineResSystem.DataAccess
         public City()
         {
             this.Journeys = new HashSet<Journey>();
+            this.Journeys1 = new HashSet<Journey>();
         }
     
         public int city_id { get; set; }
@@ -31,5 +32,7 @@ namespace AirlineResSystem.DataAccess
         public virtual Country Country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Journey> Journeys { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Journey> Journeys1 { get; set; }
     }
 }

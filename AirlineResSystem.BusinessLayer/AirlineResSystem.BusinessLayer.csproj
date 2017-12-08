@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BookingManager.cs" />
     <Compile Include="Cryptography.cs" />
     <Compile Include="Model\FlightInfo.cs" />
     <Compile Include="Model\UserDetailDO.cs" />

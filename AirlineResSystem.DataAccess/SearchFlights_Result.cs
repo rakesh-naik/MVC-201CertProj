@@ -10,17 +10,14 @@
 namespace AirlineResSystem.DataAccess
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class FlightBooking_Info
+    public partial class SearchFlights_Result
     {
-        public int booking_id { get; set; }
-        public int cust_id { get; set; }
-        public int journy_id { get; set; }
-        public int schedule_id { get; set; }
-        public string ticket_id { get; set; }
-    
-        public virtual Schedule Schedule { get; set; }
-        public virtual Ticketing_Info Ticketing_Info { get; set; }
+        public decimal cost { get; set; }
+        public string route { get; set; }
+        public System.DateTime dep_date_time { get; set; }
+        public System.DateTime arr_date_time { get; set; }
+        public string SourceCity { get; set; }
+        public string DestCity { get; set; }
     }
 }

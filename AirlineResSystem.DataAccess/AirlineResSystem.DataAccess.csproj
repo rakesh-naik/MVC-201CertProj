@@ -71,7 +71,7 @@
     <Compile Include="Country.cs">
       <DependentUpon>AirlineModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="FlightBooking_Info.cs">
+    <Compile Include="FareMapping.cs">
       <DependentUpon>AirlineModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Journey.cs">
@@ -79,6 +79,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs">
+      <DependentUpon>AirlineModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SearchFlights_Result.cs">
       <DependentUpon>AirlineModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Ticketing_Info.cs">

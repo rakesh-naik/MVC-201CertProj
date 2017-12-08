@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using AirlineResSystem.BusinessLayer;
 using AirlineReservationSystem.Models;
 using System.Threading.Tasks;
+using System.Web.Security;
 
 namespace AirlineReservationSystem.Controllers
 {
@@ -23,7 +24,7 @@ namespace AirlineReservationSystem.Controllers
         public ActionResult Register()
         {
             UserManager usr = new UserManager();
-            return View(new UserDetailDO());
+            return View(new UserDetailDO() { DateOfBirth = DateTime.Now });
         }
         [AllowAnonymous]
         [HttpPost]
@@ -52,13 +53,21 @@ namespace AirlineReservationSystem.Controllers
             }
 
             UserManager usrBL = new UserManager();
-            if (usrBL.AuthenticateUser(model.UserName, model.Password))
-            { return RedirectToLocal(returnUrl); }
+            UserDetailDO userDetail = usrBL.AuthenticateUser(model.UserName, model.Password);
+            if (userDetail != null)
+            { Session["user"] = userDetail; FormsAuthentication.SetAuthCookie(userDetail.UserName.ToString(), true); return RedirectToLocal(returnUrl); }
             TempData.Add("Error", "Incorrect UserName or Password");
             return View(new LoginViewModel());
         }
 
-
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            FormsAuthentication.SignOut();
+            Session["user"] = null;
+            return RedirectToAction("Search", "Flight");
+        }
 
         private ActionResult RedirectToLocal(string returnUrl)
         {

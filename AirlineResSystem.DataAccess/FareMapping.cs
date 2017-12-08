@@ -12,18 +12,19 @@ namespace AirlineResSystem.DataAccess
     using System;
     using System.Collections.Generic;
     
-    public partial class Schedule
+    public partial class FareMapping
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Schedule()
+        public FareMapping()
         {
             this.Ticketing_Info = new HashSet<Ticketing_Info>();
         }
     
-        public int schedule_id { get; set; }
+        public int Fare_id { get; set; }
         public int journey_id { get; set; }
-        public System.DateTime dep_date_time { get; set; }
-        public System.DateTime arr_date_time { get; set; }
+        public string @class { get; set; }
+        public decimal cost { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual Journey Journey { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

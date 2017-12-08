@@ -17,17 +17,20 @@ namespace AirlineResSystem.DataAccess
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Journey()
         {
-            this.Ticketing_Info = new HashSet<Ticketing_Info>();
+            this.Schedules = new HashSet<Schedule>();
+            this.FareMappings = new HashSet<FareMapping>();
         }
     
         public int journey_id { get; set; }
         public int source { get; set; }
         public int dest { get; set; }
-        public decimal cost { get; set; }
         public string route { get; set; }
     
-        public virtual City City { get; set; }
+        public virtual City DestCity { get; set; }
+        public virtual City SourceCity { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Ticketing_Info> Ticketing_Info { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<FareMapping> FareMappings { get; set; }
     }
 }

@@ -43,27 +43,21 @@ namespace AirlineResSystem.BusinessLayer.Model
         [Phone(ErrorMessage = "Only numbers allowed")]
         public string Mobile { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}")]
         [DataType(DataType.Date)]
         [Required(ErrorMessage = " *")]
-        [Display(Name="Date Of Birth")]
-        public DateTime? DateOfBirth { get; set; }
+        [Display(Name = "Date Of Birth")]
+        public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = " *")]
         [EmailAddress]
+        [Display(Name = "Email Id")]
         public string EmailId { get; set; }
 
         public string PassportNo { get; set; }
 
         public string MiscInfo { get; set; }
 
-        public List<KeyValuePair<string,string>> GetCountryList()
-        {
-            UserManager usrBL = new UserManager();
-            var countries = usrBL.GetCountryList().ToList();
-            countries.Insert(0, new KeyValuePair<string, string>("", ""));
-            return countries;
-
-        }
     }
 
 

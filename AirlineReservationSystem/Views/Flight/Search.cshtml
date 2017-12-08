@@ -4,6 +4,16 @@
     ViewBag.Title = "Search";
     AirlineResSystem.BusinessLayer.SearchManager srch = new AirlineResSystem.BusinessLayer.SearchManager();
     var countryList = srch.GetCountryList(true);
+    var srcCityList = new Dictionary<string, string>();
+    var destCityList = new Dictionary<string, string>();
+    if (!string.IsNullOrEmpty(Model.SourceCountry))
+    {
+        srcCityList = srch.GetCitiesOfCountry(Model.SourceCountry);
+    }
+    if (!string.IsNullOrEmpty(Model.SourceCountry))
+    {
+        destCityList = srch.GetCitiesOfCountry(Model.DestCountry);
+    }
 
 }
 
@@ -23,9 +33,13 @@
         display: inline !important;
         padding-right: 5px;
     }
+
+    .btnBook {
+        padding: 5px;
+    }
 </style>
 
-@using (Html.BeginForm("Results", "Search", FormMethod.Post))
+@using (Html.BeginForm("Search", "Flight", FormMethod.Post, new { @id = "frmSearch_Book" }))
 {
     @Html.AntiForgeryToken()
 
@@ -42,7 +56,7 @@
                 <td style="width:42%;">
                     @Html.LabelFor(model => model.SourceCity, htmlAttributes: new { @class = "control-label col-md-2" })
 
-                    @Html.DropDownListFor(model => model.SourceCity, new List<SelectListItem>(), " ", new { @class = "form-control dropdown", id = "ddlSrcCity" })
+                    @Html.DropDownListFor(model => model.SourceCity, new SelectList(srcCityList, "Key", "Value", "--select--"), " ", new { @class = "form-control dropdown", id = "ddlSrcCity" })
                     @Html.ValidationMessageFor(model => model.SourceCity, "", new { @class = "text-danger" })
 
                 </td>
@@ -55,7 +69,7 @@
                 <td style="width:42%;">
                     @Html.LabelFor(model => model.DestinationCity, htmlAttributes: new { @class = "control-label col-md-2" })
 
-                    @Html.DropDownListFor(model => model.DestinationCity, new List<SelectListItem>(), " ", new { @class = "form-control dropdown", id = "ddlDestCity" })
+                    @Html.DropDownListFor(model => model.DestinationCity, new SelectList(destCityList, "Key", "Value", "--select--"), " ", new { @class = "form-control dropdown", id = "ddlDestCity" })
                     @Html.ValidationMessageFor(model => model.DestinationCity, "", new { @class = "text-danger" })
 
                 </td>
@@ -98,30 +112,35 @@
 
                     @foreach (var item in Model.SearchResults)
                     {
+                        var lblCostId = "lblCost" + item.ScheduleId;
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.SourceCity)
+                                @Html.HiddenFor(model => model.SelectedFlight.ScheduleId, new { @id = "hdnSchId" + item.ScheduleId })
+
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.DestCity)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Route)
+                                @Html.DisplayFor(modelItem => item.GetRouteInfo)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Class)
+                                @Html.DropDownListFor(model => model.SelectedFlight.SelectedFare.FareId, new SelectList(item.AvailableFares, "FareId", "ClassDesc"), new { @class = "ddlFare", @id = "ddlClass" + item.ScheduleId })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Fare)
+                                <label id="@lblCostId">@item.SelectedFare.Cost.ToString("#0.00")</label>
+                                @Html.HiddenFor(modelItem => item.SelectedFare.Cost, new { @id = "hdnCost" + item.ScheduleId })
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.DepDateTime)
+                                @Html.DisplayFor(modelItem => item.DisplayDepDate)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.ArrivalDateTime)
-                            </td>                           
+                                @Html.DisplayFor(modelItem => item.DisplayArrvlDate)
+                            </td>
                             <td>
-                                <button class="btn-primary submitBtn">Book</button>
+                                @Html.ActionLink("Book", "Book", null, new { @class = "btn-primary btnBook", @id = "ancBook" + item.ScheduleId })
+
                             </td>
                         </tr>
                     }
@@ -135,7 +154,19 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
+@if (Model.SearchResults != null)
+{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".btnBook").each(function (e) {
+                var schId = $(this).attr('id').replace("ancBook", "");
+                var actionLInk = "/AirlineResSystem/Flight/Book/" + schId + "/" + $("#ddlClass" + schId).val();
+                $(this).attr('href', actionLInk);
+            });
+        });
+    </script>
 
+}
 <script type="text/javascript">
 
     $(".countryDDL").change(function (e) {
@@ -148,8 +179,7 @@
         else
         { cityDDL = "#ddlDestCity"; }
         $(cityDDL).empty();
-        alert(cityDDL);
-        alert(country + " :: " + selectedDDL);
+
         $.ajax({
             type: "GET",
             url: '@Url.Action("GetCityList")',
@@ -160,7 +190,7 @@
                 BindCity(data, cityDDL);
             },
             error: function (req) {
-                alert("unable to get city list");
+                alert("No city list exist for selected country");
             }
         });
     });
@@ -172,4 +202,31 @@
 
         });
     }
+
+    $(".ddlFare").change(function (e) {
+        var fareId = $(this).val();
+        var rowId = $(this).attr('id');
+        rowId = rowId.replace("ddlClass", "");
+        var actionLInk = "/AirlineResSystem/Flight/Book/" + rowId + "/" + fareId;
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetFare")',
+            dataType: "json",
+            data: { "fareId": fareId },
+            cache: true,
+            success: function (data) {
+                ChangeCost(data, rowId);
+                $("#ancBook" + rowId).attr('href', actionLInk);
+            },
+            error: function (req) {
+                alert("No Fare found for selected class");
+            }
+        });
+    });
+
+    function ChangeCost(cost, rowNumbr) {
+        $("#hdnCost" + rowNumbr).val(cost);
+        $("#lblCost" + rowNumbr).text(cost);
+    }
+
 </script>

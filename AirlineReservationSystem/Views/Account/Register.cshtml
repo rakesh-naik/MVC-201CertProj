@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "Register";
+    AirlineResSystem.BusinessLayer.SearchManager srch = new AirlineResSystem.BusinessLayer.SearchManager();
+    var countryList = srch.GetCountryList(true);
 }
 
 <h3>New User Registration</h3>
@@ -73,7 +75,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Nationality, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.Nationality, new SelectList(@Model.GetCountryList(), "Key", "Value"), new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.Nationality, new SelectList(countryList, "Key", "Value"), new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.Nationality, "", new { @class = "text-error" })
             </div>
         </div>
@@ -135,6 +137,7 @@
     $(document).ready(function (e) {
 
         $("#txtDOB").datepicker({ dateFormat: 'dd-M-yy', changeMonth: true, changeYear: true, maxDate: 0 });
-        
+        $("#txtDOB").keypress(function () { return false; })
+        $("#txtDOB").val("");
     });
 </script>

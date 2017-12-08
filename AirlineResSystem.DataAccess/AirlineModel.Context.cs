@@ -12,6 +12,8 @@ namespace AirlineResSystem.DataAccess
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class AirlineReservationEntities : DbContext
     {
@@ -27,10 +29,23 @@ namespace AirlineResSystem.DataAccess
     
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<FlightBooking_Info> FlightBooking_Info { get; set; }
         public virtual DbSet<Journey> Journeys { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Ticketing_Info> Ticketing_Info { get; set; }
         public virtual DbSet<UserInfo> UserInfoes { get; set; }
+        public virtual DbSet<FareMapping> FareMappings { get; set; }
+    
+        public virtual ObjectResult<SearchFlights_Result> SearchFlights(Nullable<int> srcCityId, Nullable<int> destCityId)
+        {
+            var srcCityIdParameter = srcCityId.HasValue ?
+                new ObjectParameter("srcCityId", srcCityId) :
+                new ObjectParameter("srcCityId", typeof(int));
+    
+            var destCityIdParameter = destCityId.HasValue ?
+                new ObjectParameter("destCityId", destCityId) :
+                new ObjectParameter("destCityId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SearchFlights_Result>("SearchFlights", srcCityIdParameter, destCityIdParameter);
+        }
     }
 }

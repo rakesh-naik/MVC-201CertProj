@@ -14,6 +14,12 @@ namespace AirlineResSystem.DataAccess
     
     public partial class UserInfo
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public UserInfo()
+        {
+            this.Ticketing_Info = new HashSet<Ticketing_Info>();
+        }
+    
         public int cust_id { get; set; }
         public string user_name { get; set; }
         public string password { get; set; }
@@ -27,5 +33,7 @@ namespace AirlineResSystem.DataAccess
         public string misc_info { get; set; }
     
         public virtual Country Country1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Ticketing_Info> Ticketing_Info { get; set; }
     }
 }

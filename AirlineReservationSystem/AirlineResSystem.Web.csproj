@@ -213,11 +213,11 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Flight\Search.cshtml" />
-    <Content Include="Views\Flight\CancelTicket.cshtml" />
+    <Content Include="Views\Flight\MyBooking.cshtml" />
+    <Content Include="Views\Flight\Book.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Booking\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

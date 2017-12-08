@@ -38,24 +38,87 @@ namespace AirlineResSystem.BusinessLayer
             }
         }
 
-        public Dictionary<string, string> GetCountryList()
-        {
-            SearchManager search = new SearchManager();
-            return search.GetCountryList();
-        }
-
-        public bool AuthenticateUser(string UserName, string pswrd)
+        public UserDetailDO AuthenticateUser(string UserName, string pswrd)
         {
             var dbctx = new AirlineReservationEntities();
             Cryptography crypt = new Cryptography();
             pswrd = crypt.Encrypt(pswrd);
             var userSearch = (from u in dbctx.UserInfoes
                               where u.user_name.ToLower() == UserName.ToLower() && pswrd == u.password
-                              select u).FirstOrDefault();
-            if (userSearch != null && userSearch.cust_id > 0)
-                return true;
+                              select new UserDetailDO()
+                              {
+                                  UserName = u.user_name,
+                                  CustomerId = u.cust_id,
+                                  FirstName = u.first_name,
+                                  LastName = u.last_name,
+                                  EmailId = u.email_addr,
+                                  Mobile = u.mobile
+                              }).FirstOrDefault();
+            if (userSearch != null && !string.IsNullOrEmpty(userSearch.FirstName))
+                return userSearch;
 
-            return false;
+            return null;
+        }
+
+        public int GetCustIdFromUserName(String userName)
+        {
+            int custId = 0;
+            var dbCtxt = new AirlineReservationEntities();
+
+            var userInfo = (from usr in dbCtxt.UserInfoes
+                            where usr.user_name == userName
+                            select usr).FirstOrDefault();
+
+            if (userInfo != null && userInfo.cust_id > 0)
+                custId = userInfo.cust_id;
+
+            return custId;
+        }
+
+        public List<FlightInfo> GetBookingOfUser(int custId)
+        {
+            try
+            {
+                var dbCtxt = new AirlineReservationEntities();
+
+                //var custId = GetCustIdFromUserName(userName);
+
+                if (custId > 0)
+                {
+                    var myBookings = (from ti in dbCtxt.Ticketing_Info
+                                      where ti.cust_id == custId
+                                      select ti).ToList();
+
+                    if (myBookings != null && myBookings.Count > 0)
+                    {
+                        List<FlightInfo> lstMyBookings = new List<FlightInfo>();
+                        foreach (var booking in myBookings)
+                        {
+                            FlightInfo flight = new FlightInfo()
+                            {
+                                TicketId = booking.ticket_id,
+                                DepDateTime = booking.Schedule.dep_date_time,
+                                ArrivalDateTime = booking.Schedule.arr_date_time,
+                                SourceCity = booking.Schedule.Journey.SourceCity.city_name,
+                                DestCity = booking.Schedule.Journey.DestCity.city_name,
+                                Route = booking.Schedule.Journey.route,
+                                Status = booking.status,
+                                SelectedFare = new Fare() { ClassCode = booking.FareMapping.@class, Cost = booking.FareMapping.cost }                            
+                            };
+                            flight.SelectedFare.DeriveFareDesc();
+                            lstMyBookings.Add(flight);
+                            
+                        }
+                        return lstMyBookings;
+                    }
+                }
+                return new List<FlightInfo>();
+            }
+            catch (Exception exc)
+            {
+                throw exc;
+            }
+
         }
     }
 }

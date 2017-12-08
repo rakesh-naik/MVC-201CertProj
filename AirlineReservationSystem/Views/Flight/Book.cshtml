@@ -1,0 +1,91 @@
+﻿@model AirlineResSystem.BusinessLayer.Model.FlightInfo
+
+@{
+    ViewBag.Title = "Confirm Flight";
+}
+
+<h2>Confirm Flight Details</h2>
+<style type="text/css">
+    .dl-horizontal dt, .dl-horizontal dd {
+        padding: 10px;
+    }
+
+    .submitBtn {
+        margin-right: 50px;
+    }
+
+    .cancelBtn {
+        padding: 5px;
+    }
+</style>
+<div>
+    <hr />
+    @if (TempData["Error"] != null)
+    { <h4 style="color:red">@TempData["Error"].ToString()</h4>}
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceCity) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DestCity) :
+        </dt>
+
+
+        <dd>
+            @Html.DisplayFor(model => model.DestCity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Route) :
+        </dt>
+
+        <dd>            
+            @Html.DisplayFor(model => model.GetRouteInfo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SelectedFare.ClassDesc) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SelectedFare.ClassDesc)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SelectedFare.Cost) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SelectedFare.Cost)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DepDateTime) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisplayDepDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ArrivalDateTime) :
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisplayArrvlDate)
+        </dd>
+    </dl>
+    @using (Html.BeginForm("Book", "Flight", FormMethod.Post, new { id = "frmConfirm" }))
+    {
+        @Html.HiddenFor(model => model.ScheduleId)
+        @Html.HiddenFor(model => model.SelectedFare.FareId)
+        <button class="btn-primary submitBtn" id="btnConfirm">Confirm</button>
+
+        @Html.ActionLink("Cancel", "Search", null, new { @class = "btn-danger cancelBtn" })
+    }
+</div>
